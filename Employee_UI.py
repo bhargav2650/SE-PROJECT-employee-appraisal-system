@@ -1,9 +1,13 @@
 import streamlit as st
 
+
 def E_UI():
     col1, col2 = st.columns([3.5,1])
     with col2:
             dummy = st.button("LogOut")
+            if dummy:
+                # LogOut_Clicked()
+                st.session_state['loggedIn']=False
     c1,c2,c3=st.columns([2,10,2])
     with c2:
         st.write('##')
