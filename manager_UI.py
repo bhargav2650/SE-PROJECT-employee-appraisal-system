@@ -5,6 +5,17 @@ import pandas as pd
 from helper import calculate_score,send_mail
 from database import get_mailid,select_rating,select_topN,set_submit,get_submit
 import time
+from datetime import datetime
+
+# datetime object containing current date and time
+now = datetime.now()
+ 
+# print("now =", now)
+
+# dd/mm/YY H:M:S
+dt_date = now.strftime("%d/%m/%Y")
+dt_time =  now.strftime("%H:%M:%S")
+# print("date and time =", dt_string)
 # from helper import get_form_responces
 # st.set_page_config(page_title=None, page_icon=None, layout="wide", initial_sidebar_state="auto", menu_items=None)
 
@@ -58,15 +69,18 @@ def M_UI():
                     d = st.date_input("select a date to schedule the meeting",datetime.date(2019, 7, 6))
                     t = st.time_input('Set start time', datetime.time(8, 45))
                     link = st.text_input('Enter meeting Link')
-                    if st.button('schedule'):
-                        emp_mail = get_mailid(emp_id)
-                        mgr_mail = get_mailid(mgr_id)
+                    if d >= dt_date and t>dt_time :
+                        if st.button('schedule'):
+                            emp_mail = get_mailid(emp_id)
+                            mgr_mail = get_mailid(mgr_id)
                         #this mail is regarding the meeting , include link,date,time 
-                        name = get_name_m(mgr_id)
-                        name_e = get_name_e(e_id)
-                        send_mail('Regarding appraisal review meeting',f"Dear employee,\n\nI,{name} have scheduled a meeting to discuss your review regarding the form you have submitted for appraisal on {d} at {t}.\n.Join the meeting link provided below for the same.\n\n{link}",emp_mail) 
-                        send_mail('Regarding appraisal review meeting',f'Dear manager,\n\n You have scheduled a meeting with {name_e} for further discussion on his appraisal review on {d} at {t}.Join the below meeting link for the same\n{link}',mgr_mail) 
-                        st.success('Meeting scheduled')
+                            name = get_name_m(mgr_id)
+                            name_e = get_name_e(e_id)
+                            send_mail('Regarding appraisal review meeting',f"Dear employee,\n\nI,{name} have scheduled a meeting to discuss your review regarding the form you have submitted for appraisal on {d} at {t}.\n.Join the meeting link provided below for the same.\n\n{link}",emp_mail) 
+                            send_mail('Regarding appraisal review meeting',f'Dear manager,\n\n You have scheduled a meeting with {name_e} for further discussion on his appraisal review on {d} at {t}.Join the below meeting link for the same\n{link}',mgr_mail) 
+                            st.success('Meeting scheduled')
+                    else : 
+                        st.info("Please enter correct date and time")
                             
 
             with tab3:
